@@ -1,0 +1,25 @@
+{
+  "name": "gameroom",
+  "description": "\"# GameRoom\"",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KennethJMiddleton/GameRoom.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KennethJMiddleton/GameRoom/issues"
+  },
+  "homepage": "https://github.com/KennethJMiddleton/GameRoom#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "jsonwebtoken": "^8.3.0",
+    "passport": "^0.4.0"
+  }
+}
