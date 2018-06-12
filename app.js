@@ -50,7 +50,7 @@ gameRoom.controller('loginController', ['$scope', '$location', '$resource', func
         console.log('call: '+$scope.callLoginAPI);
         $scope.credentials = $scope.callLoginAPI.create({'username': $scope.username, 'password': $scope.password});
 
-        console.log($scope.credentials);
+        console.log('cred: '+$scope.credentials);
 
         //$location.path('/home');
     };
