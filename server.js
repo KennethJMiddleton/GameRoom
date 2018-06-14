@@ -1,5 +1,5 @@
 'use strict';
-require('dotenv').config();
+require('dotenv').config({silent:true});
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -43,6 +43,8 @@ const jwtAuth = passport.authenticate('jwt', { session: false });
 
 app.use('/gameshelf', jwtAuth, shelfRouter);
 app.use('/games', jwtAuth, gameRouter);
+
+app.get('/*', express.static('./'))
 
 let server;
 
