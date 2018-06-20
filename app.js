@@ -1,4 +1,4 @@
-var gameRoom = angular.module('gameRoom', ['ngRoute', 'ngResource']);
+var gameRoom = angular.module('gameRoom', ['ngRoute', 'ngResource', 'angular-jwt']);
 
 gameRoom.config(function ($routeProvider) {
     $routeProvider
@@ -36,23 +36,34 @@ gameRoom.config(function ($routeProvider) {
         })
 });
 
+gameRoom.service('credService', function() {
+    this.token='empty';
+});
+
 gameRoom.controller('landingController', ['$scope', function($scope){
 
 }]);
 
-gameRoom.controller('loginController', ['$scope', '$location', '$resource', function($scope, $location, $resource){    
+gameRoom.controller('loginController', ['$scope', '$location', '$resource','jwtHelper', 'credService', function($scope, $location, $resource, jwtHelper, credService){    
     $scope.submitLogin = function() {
 
-        $scope.callLoginAPI = $resource('/auth/login',{},{create: {method: "POST"}});
-
-        console.log('username: '+$scope.username);
-        console.log('password: '+$scope.password);
-        console.log($scope.callLoginAPI);
-        $scope.credentials = $scope.callLoginAPI.create({'username': $scope.username, 'password': $scope.password});
-
-        console.log($scope.credentials);
-
-        //$location.path('/home');
+        $scope.loginError = '';
+        $scope.callLoginAPI = $resource('/auth/login');
+        var login = new $scope.callLoginAPI({'username': $scope.username, 'password': $scope.password})
+        login.$save(function (response) {
+            console.log(response);
+            credService.token = response.authToken;
+            console.log(credService.token);
+            console.log(jwtHelper.isTokenExpired(credService.token));
+            if (!jwtHelper.isTokenExpired(credService.token)){
+                $location.path('/home');
+            };
+        }, function (error) {
+            console.log(error);
+            if(error.data == 'Unauthorized'){
+                $scope.loginError = 'That username and password combination are not in our system. Please try again.'
+            };
+        })
     };
 }]);
 
