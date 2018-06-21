@@ -34,10 +34,14 @@ gameRoom.config(function ($routeProvider) {
             templateUrl: 'pages/newGame.html',
             controller: 'newGameController'
         })
+        .when('/security', {
+            templateURL: 'pages/security.html',
+            controller: 'securityController'
+        })
 });
 
 gameRoom.service('credService', function() {
-    this.token='empty';
+    this.token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiTi9BIiwidXNlcm5hbWUiOiJOL0EiLCJmaXJzdE5hbWUiOiIiLCJsYXN0TmFtZSI6IiIsIm15U2hlbGYiOiJOL0EiLCJmcmllbmRzU2hlbGZzIjpbIiJdfSwiaWF0IjoxMjI5NTM4MDk0LCJleHAiOjEyMjk1NDI2OTQsInN1YiI6Ik4vQSJ9.v13oZp6eZak4qN-6PGlHjWC1J0NLGZ9YnN07-Rdd_vM';
 });
 
 gameRoom.controller('landingController', ['$scope', function($scope){
@@ -71,7 +75,11 @@ gameRoom.controller('newAccountController', ['$scope', function($scope){
 
 }]);
 
-gameRoom.controller('homeController', ['$scope', function($scope){
+gameRoom.controller('homeController', ['$scope','$location', 'jwtHelper', 'credService', function($scope,$location,jwtHelper,credService){
+    if(jwtHelper.isTokenExpired(credService.token)){
+        console.log('it works!')
+        $location.path('/security');
+    }
 
 }]);
 
@@ -88,5 +96,8 @@ gameRoom.controller('logoutController', ['$scope', function($scope){
 }]);
 
 gameRoom.controller('newGameController', ['$scope', function($scope){
+
+}]);
+gameRoom.controller('securityController', ['$scope', function($scope){
 
 }]);
