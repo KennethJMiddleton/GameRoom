@@ -6,6 +6,10 @@ gameRoom.config(function ($routeProvider) {
             templateUrl: 'pages/landing.html',
             controller: 'landingController'
         })
+        .when('/security', {
+            templateURL: 'pages/security.html',
+            controller: 'securityController'
+        })
         .when('/login', {
             templateUrl: 'pages/login.html',
             controller: 'loginController'
@@ -34,10 +38,7 @@ gameRoom.config(function ($routeProvider) {
             templateUrl: 'pages/newGame.html',
             controller: 'newGameController'
         })
-        .when('/security', {
-            templateURL: 'pages/security.html',
-            controller: 'securityController'
-        })
+     
 });
 
 gameRoom.service('credService', function() {
