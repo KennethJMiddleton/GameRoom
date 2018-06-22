@@ -77,10 +77,10 @@ gameRoom.controller('newAccountController', ['$scope', function($scope){
 }]);
 
 gameRoom.controller('homeController', ['$scope','$location', 'jwtHelper', 'credService', function($scope,$location,jwtHelper,credService){
-    if(jwtHelper.isTokenExpired(credService.token)){
+    /*if(jwtHelper.isTokenExpired(credService.token)){
         console.log('it works!')
         $location.path('/security');
-    }
+    }*/
 
 }]);
 
@@ -92,8 +92,12 @@ gameRoom.controller('searchController', ['$scope', function($scope){
 
 }]);
 
-gameRoom.controller('logoutController', ['$scope', function($scope){
-
+gameRoom.controller('logoutController', ['$scope', '$location', 'credService', function($scope, $location, credService){
+    $scope.submitLogout = function() {
+        credService.token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiTi9BIiwidXNlcm5hbWUiOiJOL0EiLCJmaXJzdE5hbWUiOiIiLCJsYXN0TmFtZSI6IiIsIm15U2hlbGYiOiJOL0EiLCJmcmllbmRzU2hlbGZzIjpbIiJdfSwiaWF0IjoxMjI5NTM4MDk0LCJleHAiOjEyMjk1NDI2OTQsInN1YiI6Ik4vQSJ9.v13oZp6eZak4qN-6PGlHjWC1J0NLGZ9YnN07-Rdd_vM';
+        console.log('go away')
+        $location.path('/');
+    };
 }]);
 
 gameRoom.controller('newGameController', ['$scope', function($scope){
