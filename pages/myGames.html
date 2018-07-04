@@ -19,4 +19,31 @@
         </div>
     </nav>
 </header>
-my games
+<div ng-hide="emptyRoom">
+    <div class="room">
+            <div id="filters">
+                <span id="searchName"><label for="searchBox">Search by Name:</label>
+                <input type="text" ng-model="searchText" id="searchBox"/></span>
+                
+                <span id="searchNumber"><label for="searchBox">Search by Number of Players:</label>
+                <input type="number" ng-model="searchRange" id="searchBox"/></span>
+            </div>
+
+            <div id="games">
+                <div class="row">
+                    <div class="col-sm-4" ng-repeat="game in gamelist">
+                        <div class="card">
+                            <div class="card-body">
+                                    <h5 class="card-title">{{game.name}}</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">{{game.minPlayers}}-{{game.maxPlayers}} Players Ages {{game.age}} and up</h6>
+                                    <p class="card-text" >{{game.qualities}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<div ng-show="emptyRoom">
+        You don't have any games on your shelf yet. You should click on 'Search Games' above and fix that.
+</div>
