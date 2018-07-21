@@ -97,53 +97,97 @@ gameRoom.controller('myGamesController', ['$scope', '$location', '$resource', 'j
     if(jwtHelper.isTokenExpired(credService.token)){
         $location.path('/security');
     }
-    $scope.table = "You don't have any games on your shelf yet. You should click on 'Search' above and fix that."
+    $scope.emptyRoom = false;
     var payload = jwtHelper.decodeToken(credService.token);
     $scope.getGames = $resource('/gameshelf/' + payload.user.myShelf);
     $scope.getGames.query(function(games){
-        console.log(games);
         if (games.length === 0){
             $scope.emptyRoom = true;
         }
         else {
             $scope.gamelist = Object.values(games);
             $scope.gamelist.splice(-2,2);
-            console.log($scope.gamelist);
             for(var game, i=0; game=$scope.gamelist[i++];){
                 var qualityArray = [];
                 if(game.bluffing === true ){
-                    qualityArray.push("bluffing");
+                    qualityArray.push("/icons/bluffing.png");
                 }
                 if(game.coop === true ){
-                    qualityArray.push("cooperative");
+                    qualityArray.push("/icons/cooperative.png");
                 }
                 if(game.deckBuilding === true ){
-                    qualityArray.push("deck building");
+                    qualityArray.push("/icons/deck_building.png");
                 }
                 if(game.dice === true ){
-                    qualityArray.push("dice");
+                    qualityArray.push("/icons/dice.png");
                 }
                 if(game.party === true ){
-                    qualityArray.push("party");
+                    qualityArray.push("/icons/party.png");
                 }
                 if(game.setCollecting === true ){
-                    qualityArray.push("set collecting");
+                    qualityArray.push("/icons/set_collecting.png");
                 }
                 if(game.tokenMovement === true ){
-                    qualityArray.push("token movement");
+                    qualityArray.push("/icons/token_movement.png");
                 }
                 if(game.tokenPlacement === true ){
-                    qualityArray.push("token placement");
+                    qualityArray.push("/icons/token_placement.png");
                 }
                 if(game.trivia === true ){
-                    qualityArray.push("trivia");
+                    qualityArray.push("/icons/trivia.png");
                 }
                 if(game.expansion === true ){
-                    qualityArray.push("expansion");
+                    qualityArray.push("/icons/expansion.png");
                 }
-                game.qualities = qualityArray.toString();
+                game.qualities = qualityArray;
             }
+            $scope.gamesPerPage = 3;
+            $scope.currentPage = 1;
+            $scope.searchText = "";
+            $scope.filteredGames = $scope.gamelist;
+            $scope.gameNameSearch = "";
+            $scope.gameNumSearch = "";
             console.log($scope.gamelist);
+
+            $scope.newPage = function(page){
+                console.log(page, 'newpage')
+                $scope.currentPage = page;
+                var start = (($scope.gamesPerPage*$scope.currentPage)-$scope.gamesPerPage);
+                var end = start+parseInt($scope.gamesPerPage);
+                $scope.filteredGames = $scope.gamelist.slice(start,end); 
+            }
+
+            $scope.getNumber = function(num){
+                return new Array(num);
+            }
+
+            $scope.$watch('gamesPerPage',function(newValue,oldValue){
+                if(newValue!==oldValue){
+                    $scope.currentPage = 1;
+                    $scope.numberOfPages = Math.ceil($scope.filteredGames.length/$scope.gamesPerPage);
+                    $scope.newPage(1);
+                    console.log(newValue, oldValue, 'something');
+                }
+            });
+
+            $scope.$watch('gameNameSearch',function(newValue,oldValue){
+                if(newValue || newValue==''){
+                    var items = [];
+                    for (var item, i = 0; item = $scope.gamelist[i++];){
+                        var name = item.name.toLowerCase();
+                        var search = newValue.toLowerCase();
+                        if(name.indexOf(search) != -1){
+                            items.push(item);
+                        }
+                    }
+                    $scope.filteredContacts = items;
+                    $scope.currentPage = 1;
+                    $scope.selectedState = "";
+                    $scope.numberOfPages = Math.ceil($scope.filteredGames.length/$scope.gamesPerPage);	
+                }
+            });
+
+            
         } 
     },function(error){
         console.log(error);

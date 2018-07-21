@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+ 	background-image: url(https://i.imgur.com/AKWiqSL.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: 50%;
+    margin: 0px;
+}
+
+.card-header{
+    font-weight: bold;
+}
