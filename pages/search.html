@@ -19,4 +19,45 @@
         </div>
     </nav>
 </header>
-search
+
+<div id="filters">
+    <label for="gamesPerPage">Games Per Page:</label>
+    <select id="gamesPerPage" ng-model="gamesPerPage">
+        <option ng-value="3">3</option>
+        <option ng-value="6">6</option>
+        <option ng-value="12">12</option>
+    </select>
+
+    <span id="searchName"><label for="searchBox1">Search by Name:</label>
+    <input type="text" ng-model="gameNameSearch" id="searchBox1"/></span>
+</div>
+
+<div id="games">
+    <div class="row">
+        <div class="col-sm-4" ng-repeat="game in filteredGames| limitTo:gamesPerPage">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">{{game.name}}</div>
+                <div class="card-body">
+                    <h6 class="card-title">{{game.minPlayers}}-{{game.maxPlayers}} Players Ages {{game.age}} and up</h6>
+                    <p class="card-text" ng-repeat="quality in game.qualities" style="float:left">
+                        <img class="qualicon" ng-src="{{quality}}"/>
+                    </p>
+                    <br>
+                    <br>
+                    <p class="card-text">
+                        Time to play: {{game.time}} minutes
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pagination">
+    <ul class='pagination'>
+        <li ng-repeat="i in getNumber(numberOfPages) track by $index">
+            <a ng-show="($index+1) == currentPage" href='#!/search' class='active'>{{$index+1}}</a>
+            <a ng-show="($index+1) != currentPage" href='#!/search' ng-click="newPage($index+1)">{{$index+1}}</a>
+        </li>
+    </ul>
+</div>

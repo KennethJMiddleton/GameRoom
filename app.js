@@ -141,9 +141,8 @@ gameRoom.controller('myGamesController', ['$scope', '$location', '$resource', 'j
                 }
                 game.qualities = qualityArray;
             }
-            $scope.gamesPerPage = 3;
+            $scope.gamesPerPage = 6;
             $scope.currentPage = 1;
-            $scope.searchText = "";
             $scope.filteredGames = $scope.gamelist;
             $scope.gameNameSearch = "";
             $scope.gameNumSearch = "";
@@ -194,8 +193,97 @@ gameRoom.controller('myGamesController', ['$scope', '$location', '$resource', 'j
     });
 }]);
 
-gameRoom.controller('searchController', ['$scope', function($scope){
+gameRoom.controller('searchController', ['$scope', '$location', '$resource', 'jwtHelper', 'credService', function($scope, $location, $resource, jwtHelper, credService){
+    if(jwtHelper.isTokenExpired(credService.token)){
+        $location.path('/security');
+    }
+    //var payload = jwtHelper.decodeToken(credService.token);
+    $scope.getGamesMaster = $resource('/games');
+    $scope.getGamesMaster.query(function(master){
+        console.log(master);
+        $scope.gamelist = Object.values(master);
+        $scope.gamelist.splice(-2,2);
+        for(var game, i=0; game=$scope.gamelist[i++];){
+            var qualityArray = [];
+            if(game.bluffing === true ){
+                qualityArray.push("/icons/bluffing.png");
+            }
+            if(game.coop === true ){
+                qualityArray.push("/icons/cooperative.png");
+            }
+            if(game.deckBuilding === true ){
+                qualityArray.push("/icons/deck_building.png");
+            }
+            if(game.dice === true ){
+                qualityArray.push("/icons/dice.png");
+            }
+            if(game.party === true ){
+                qualityArray.push("/icons/party.png");
+            }
+            if(game.setCollecting === true ){
+                qualityArray.push("/icons/set_collecting.png");
+            }
+            if(game.tokenMovement === true ){
+                qualityArray.push("/icons/token_movement.png");
+            }
+            if(game.tokenPlacement === true ){
+                qualityArray.push("/icons/token_placement.png");
+            }
+            if(game.trivia === true ){
+                qualityArray.push("/icons/trivia.png");
+            }
+            if(game.expansion === true ){
+                qualityArray.push("/icons/expansion.png");
+            }
+            game.qualities = qualityArray;
+        }
+        $scope.gamesPerPage = 6;
+        $scope.currentPage = 1;
+        $scope.filteredGames = $scope.gamelist;
+        $scope.gameNameSearch = "";
+        $scope.gameNumSearch = "";
+        console.log($scope.gamelist);
 
+        $scope.newPage = function(page){
+            console.log(page, 'newpage')
+            $scope.currentPage = page;
+            var start = (($scope.gamesPerPage*$scope.currentPage)-$scope.gamesPerPage);
+            var end = start+parseInt($scope.gamesPerPage);
+            $scope.filteredGames = $scope.gamelist.slice(start,end); 
+        }
+
+        $scope.getNumber = function(num){
+            return new Array(num);
+        }
+
+        $scope.$watch('gamesPerPage',function(newValue,oldValue){
+            if(newValue!==oldValue){
+                $scope.currentPage = 1;
+                $scope.numberOfPages = Math.ceil($scope.filteredGames.length/$scope.gamesPerPage);
+                $scope.newPage(1);
+                console.log(newValue, oldValue, 'something');
+            }
+        });
+
+        $scope.$watch('gameNameSearch',function(newValue,oldValue){
+            if(newValue || newValue==''){
+                var items = [];
+                for (var item, i = 0; item = $scope.gamelist[i++];){
+                    var name = item.name.toLowerCase();
+                    var search = newValue.toLowerCase();
+                    if(name.indexOf(search) != -1){
+                        items.push(item);
+                    }
+                }
+                $scope.filteredContacts = items;
+                $scope.currentPage = 1;
+                $scope.selectedState = "";
+                $scope.numberOfPages = Math.ceil($scope.filteredGames.length/$scope.gamesPerPage);	
+            }
+        });
+    },function(error){
+        console.log(error);
+    });
 }]);
 
 gameRoom.controller('logoutController', ['$scope', '$location', 'credService', function($scope, $location, credService){
