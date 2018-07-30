@@ -1,12 +1,12 @@
-<form id="Create-Account" class="Create-Account">
+<form ng-submit='submitCreate()'>
     <h2>Please create a username and password below</h2>
     <label for="user-create">Create a username</label> 
-    <input type="text" id="user-create" class="js-user-create"><br>
+    <input type="text" id="user-create" ng-model="userCreate"><br>
     <label for="password-create"> Create a password</label>
-    <input type="password" id="password-create" class="js-password-create"><br>
+    <input type="password" id="password-create" ng-model="passwordCreate"><br>
     <label for="password-confirm"> Confirm password</label>
-    <input type="password" id="password-confirm" class="js-password-confirm"><br>
-    <button type="submit" class="create-account-button">Create your Account</button><br>
-    <section class="Create-Error"></section>
-    <a href='#!/' class='btn btn-dark'>Back to the Main Page</a>
+    <input type="password" id="password-confirm" ng-model="passwordConfirm"><br>
+    <button type="submit" class="create-button btn btn-dark" role='button'>Create your Account</button><br>
+    <section class="Create-Error">{{loginError}}{{createError}}</section>
+    <a href='#!/' class='btn btn-dark' role='button'>Back to the Main Page</a>
   </form>

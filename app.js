@@ -38,11 +38,19 @@ gameRoom.config(function ($routeProvider) {
             templateUrl: 'pages/newGame.html',
             controller: 'newGameController'
         })
+        .when('/review', {
+            templateUrl: 'pages/review.html',
+            controller: 'reviewController'
+        })
      
 });
 
 gameRoom.service('credService', function() {
     this.token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiTi9BIiwidXNlcm5hbWUiOiJOL0EiLCJmaXJzdE5hbWUiOiIiLCJsYXN0TmFtZSI6IiIsIm15U2hlbGYiOiJOL0EiLCJmcmllbmRzU2hlbGZzIjpbIiJdfSwiaWF0IjoxMjI5NTM4MDk0LCJleHAiOjEyMjk1NDI2OTQsInN1YiI6Ik4vQSJ9.v13oZp6eZak4qN-6PGlHjWC1J0NLGZ9YnN07-Rdd_vM';
+});
+
+gameRoom.service('gameHolder', function(){
+    this.game={};
 });
 
 gameRoom.config(function Config($httpProvider, jwtOptionsProvider){
@@ -54,7 +62,17 @@ gameRoom.config(function Config($httpProvider, jwtOptionsProvider){
     $httpProvider.interceptors.push('jwtInterceptor');
 });
 
-
+gameRoom.filter('playerRange', function(){
+    return function(input, target){
+    var output=[];
+    angular.forEach(input, function(game){
+        if(game.minPlayers <= target && target <= game.maxPlayers){
+            output.push(game); 
+        };
+    });     
+    return output;
+    }
+});
 
 gameRoom.controller('landingController', ['$scope', function($scope){
 
@@ -82,8 +100,42 @@ gameRoom.controller('loginController', ['$scope', '$location', '$resource','jwtH
     };
 }]);
 
-gameRoom.controller('newAccountController', ['$scope', function($scope){
-
+gameRoom.controller('newAccountController', ['$scope', '$location', '$resource','jwtHelper', 'credService', function($scope, $location, $resource, jwtHelper, credService){
+    $scope.submitCreate = function() {
+        $scope.createError ="";
+        if($scope.passwordCreate === $scope.passwordConfirm){
+            var user = {
+                "username" : $scope.userCreate,
+                "password" : $scope.passwordCreate
+            };
+            $scope.callCreateAPI = $resource('/users/');
+            var create = new $scope.callCreateAPI(user);
+            create.$save(function (response) {
+                if(response.username===user.username){
+                    $scope.callLoginAPI = $resource('/auth/login');
+                    var login = new $scope.callLoginAPI({'username': user.username, 'password': user.password})
+                    login.$save(function (response) {
+                        credService.token = response.authToken;
+                        if (!jwtHelper.isTokenExpired(credService.token)){
+                            $location.path('/home');
+                        };
+                    }, function (error) {
+                        if(error.data == 'Unauthorized'){
+                            $scope.loginError = 'That username and password combination are not in our system. Please try again.'
+                        }
+                        else{
+                            $scope.loginError = 'Something went wrong! Make sure you typed something in both fields. If you did, please reload the page and try again.'
+                        };
+                    })
+                }
+                else{
+                    $scope.createError = 'Your passwords do no match. Please try again.'
+                };
+            }, function (error) {
+               $scope.createError = error.data.message;
+            });
+        }
+    };
 }]);
 
 gameRoom.controller('homeController', ['$scope','$location', 'jwtHelper', 'credService', function($scope,$location,jwtHelper,credService){
@@ -163,7 +215,7 @@ gameRoom.controller('myGamesController', ['$scope', '$location', '$resource', 'j
             $scope.$watch('gamesPerPage',function(newValue,oldValue){
                 if(newValue!==oldValue){
                     $scope.currentPage = 1;
-                    $scope.numberOfPages = Math.ceil($scope.filteredGames.length/$scope.gamesPerPage);
+                    $scope.numberOfPages = Math.ceil($scope.gamelist.length/$scope.gamesPerPage);
                     $scope.newPage(1);
                     console.log(newValue, oldValue, 'something');
                 }
@@ -171,21 +223,15 @@ gameRoom.controller('myGamesController', ['$scope', '$location', '$resource', 'j
 
             $scope.$watch('gameNameSearch',function(newValue,oldValue){
                 if(newValue || newValue==''){
-                    var items = [];
-                    for (var item, i = 0; item = $scope.gamelist[i++];){
-                        var name = item.name.toLowerCase();
-                        var search = newValue.toLowerCase();
-                        if(name.indexOf(search) != -1){
-                            items.push(item);
-                        }
-                    }
-                    $scope.filteredContacts = items;
-                    $scope.currentPage = 1;
-                    $scope.selectedState = "";
                     $scope.numberOfPages = Math.ceil($scope.filteredGames.length/$scope.gamesPerPage);	
                 }
             });
 
+            $scope.$watch('gameNumSearch',function(newValue,oldValue){
+                if(newValue || newValue==''){
+                    $scope.numberOfPages = Math.ceil($scope.filteredGames.length/$scope.gamesPerPage);	
+                }
+            });
             
         } 
     },function(error){
@@ -241,7 +287,7 @@ gameRoom.controller('searchController', ['$scope', '$location', '$resource', 'jw
         $scope.currentPage = 1;
         $scope.filteredGames = $scope.gamelist;
         $scope.gameNameSearch = "";
-        $scope.gameNumSearch = "";
+        $scope.gameNumSearch = "2";
         console.log($scope.gamelist);
 
         $scope.newPage = function(page){
@@ -259,7 +305,7 @@ gameRoom.controller('searchController', ['$scope', '$location', '$resource', 'jw
         $scope.$watch('gamesPerPage',function(newValue,oldValue){
             if(newValue!==oldValue){
                 $scope.currentPage = 1;
-                $scope.numberOfPages = Math.ceil($scope.filteredGames.length/$scope.gamesPerPage);
+                $scope.numberOfPages = Math.ceil($scope.gamelist.length/$scope.gamesPerPage);
                 $scope.newPage(1);
                 console.log(newValue, oldValue, 'something');
             }
@@ -286,17 +332,91 @@ gameRoom.controller('searchController', ['$scope', '$location', '$resource', 'jw
     });
 }]);
 
-gameRoom.controller('logoutController', ['$scope', '$location', 'credService', function($scope, $location, credService){
+gameRoom.controller('logoutController', ['$scope','$location', 'jwtHelper', 'credService', function($scope,$location,jwtHelper,credService){
+    if(jwtHelper.isTokenExpired(credService.token)){
+        $location.path('/security');
+    }
     $scope.submitLogout = function() {
         credService.token='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiTi9BIiwidXNlcm5hbWUiOiJOL0EiLCJmaXJzdE5hbWUiOiIiLCJsYXN0TmFtZSI6IiIsIm15U2hlbGYiOiJOL0EiLCJmcmllbmRzU2hlbGZzIjpbIiJdfSwiaWF0IjoxMjI5NTM4MDk0LCJleHAiOjEyMjk1NDI2OTQsInN1YiI6Ik4vQSJ9.v13oZp6eZak4qN-6PGlHjWC1J0NLGZ9YnN07-Rdd_vM';
-        console.log('go away')
         $location.path('/');
     };
 }]);
 
-gameRoom.controller('newGameController', ['$scope', function($scope){
+gameRoom.controller('newGameController', ['$scope','$location', 'jwtHelper', 'credService', 'gameHolder', function($scope,$location,jwtHelper,credService,gameHolder){
+    if(jwtHelper.isTokenExpired(credService.token)){
+        $location.path('/security');
+    }
+    $scope.submitAdd = function() {
+        gameHolder.game = {
+            name: $scope.name,
+            minPlayers: $scope.minPlayers,
+            maxPlayers: $scope.maxPlayers,
+            time: $scope.time,
+            age: $scope.age,
+            coop: $scope.coop,
+            dice: $scope.dice,
+            deckBuilding: $scope.deckBuilding,
+            bluffing: $scope.bluffing,
+            tokenMovement: $scope.tokenMovement,
+            tokenPlacement: $scope.tokenPlacement,
+            setCollecting: $scope.setCollecting,
+            party: $scope.party,
+            trivia: $scope.trivia,
+            expansion: $scope.expansion
+        };
+        $location.path('/review');
+    }
+}]);
+
+gameRoom.controller('securityController', ['$scope', function($scope){
 
 }]);
-gameRoom.controller('securityController', ['$scope', function($scope){
+
+gameRoom.controller('reviewController', ['$scope','$location', '$resource', 'jwtHelper', 'credService', 'gameHolder', function($scope,$location,$resource,jwtHelper,credService,gameHolder){
+    if(jwtHelper.isTokenExpired(credService.token)){
+        $location.path('/security');
+    }
+    $scope.game = gameHolder.game;
+    var qualityArray = [];
+    if($scope.game.bluffing === 'true' ){
+        qualityArray.push("/icons/bluffing.png");
+    }
+    if($scope.game.coop === 'true' ){
+        qualityArray.push("/icons/cooperative.png");
+    }
+    if($scope.game.deckBuilding === 'true' ){
+        qualityArray.push("/icons/deck_building.png");
+    }
+    if($scope.game.dice === 'true' ){
+        qualityArray.push("/icons/dice.png");
+    }
+    if($scope.game.party === 'true' ){
+        qualityArray.push("/icons/party.png");
+    }
+    if($scope.game.setCollecting === 'true' ){
+        qualityArray.push("/icons/set_collecting.png");
+    }
+    if($scope.game.tokenMovement === 'true' ){
+        qualityArray.push("/icons/token_movement.png");
+    }
+    if($scope.game.tokenPlacement === 'true' ){
+        qualityArray.push("/icons/token_placement.png");
+    }
+    if($scope.game.trivia === 'true' ){
+        qualityArray.push("/icons/trivia.png");
+    }
+    if($scope.game.expansion === 'true' ){
+        qualityArray.push("/icons/expansion.png");
+    }
+    $scope.game.qualities = qualityArray;
+    $scope.submitGame = function(game){
+        $scope.callGameAPI = $resource('/games/');
+        var newGame = new $scope.callGameAPI(game);
+        newGame.$save(function (response) {
+            $location.path('/search');
+        }, function (error) {
+            console.log(error);
+        });
+    };
 
 }]);

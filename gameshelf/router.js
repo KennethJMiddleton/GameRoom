@@ -9,17 +9,6 @@ const {Game} = require('../games');
 const config = require('../config');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  Shelf
-    .find()
-    .then(shelf => {res.json(
-      shelf.map(game => game.serialize())
-    )})
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({message: 'Internal server error'})
-    });
-});
 
 router.get('/:id', (req, res) => {
   Shelf

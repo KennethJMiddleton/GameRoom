@@ -1,0 +1,24 @@
+Is this information about the game you just added correct?
+<div id="review">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">{{game.name}}</div>
+                <div class="card-body">
+                    <h6 class="card-title">{{game.minPlayers}}-{{game.maxPlayers}} Players Ages {{game.age}} and up</h6>
+                    <p class="card-text" ng-repeat="quality in game.qualities" style="float:left">
+                        <img class="qualicon" ng-src="{{quality}}"/>
+                    </p>
+                    <br>
+                    <br>
+                    <p class="card-text">
+                        Time to play: {{game.time}} minutes
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<button ng-click='submitGame(game)' class='btn btn-dark'>Yes</button>
+<a href='#!/newGame' class='btn btn-dark' role='button'>No</a>
+{{gameSubmit}}
