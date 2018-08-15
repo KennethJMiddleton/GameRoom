@@ -3,13 +3,13 @@
         <a class="navbar-brand" href="#!/home">Game Room</a>
         <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <li class="nav-item active">
                     <a class="nav-link" href="#!/home">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#!/myGames">My Games</a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="#!/search">Search Games</a>
                 </li>
                 <li class="nav-item">
@@ -37,7 +37,7 @@
 
 <div id="games">
     <div class="row">
-        <div class="col-sm-4" ng-repeat="game in filteredGames.slice(((currentPage-1)*gamesPerPage), ((currentPage)*gamesPerPage))|filter:{name: gameNameSearch}|limitTo:gamesPerPage">
+        <div class="col-sm-4" ng-repeat="game in filteredGames| limitTo:gamesPerPage">
             <div class="card text-white bg-info mb-3">
                 <div class="card-header">{{game.name}}</div>
                 <div class="card-body">
@@ -45,6 +45,8 @@
                     <p class="card-text" ng-repeat="quality in game.qualities" style="float:left">
                         <img class="qualicon" ng-src="{{quality}}"/>
                     </p>
+                    <br>
+                    <br>
                     <p class="card-text">
                         Time to play: {{game.time}} minutes
                     </p>
@@ -55,5 +57,10 @@
 </div>
 
 <div id="pagination">
-    <ul uib-pagination items-per-page="gamesPerPage" boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+    <ul class='pagination'>
+        <li ng-repeat="i in getNumber(numberOfPages) track by $index">
+            <a ng-show="($index+1) == currentPage" href='#!/search' class='active'>{{$index+1}}</a>
+            <a ng-show="($index+1) != currentPage" href='#!/search' ng-click="newPage($index+1)">{{$index+1}}</a>
+        </li>
+    </ul>
 </div>

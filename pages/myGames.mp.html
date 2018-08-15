@@ -1,0 +1,76 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#!/home">Game Room</a>
+        <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#!/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/myGames">My Games</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/search">Search Games</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#!/newGame">Add a Game</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#!/logout">Log out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<div ng-hide="emptyRoom">
+    <div class="room">
+        
+            <div id="filters">
+                <label for="gamesPerPage">Games Per Page:</label>
+                <select id="gamesPerPage" ng-model="gamesPerPage">
+			        <option ng-value="3">3</option>
+			        <option ng-value="6">6</option>
+			        <option ng-value="12">12</option>
+		        </select>
+
+                <span id="searchName"><label for="searchBox1">Search by Name:</label>
+                <input type="text" ng-model="gameNameSearch" id="searchBox1"/></span>
+                
+                <span id="searchNumber"><label for="searchBox2">Search by Number of Players:</label>
+                <input type="number" ng-model="gameNumSearch" id="searchBox2"/></span>
+            </div>
+
+            <div id="games">
+                <div class="row">
+                    <div class="col-sm-4" ng-repeat="game in filteredGames|filter:{name: gameNameSearch}|playerRange: gameNumSearch|limitTo:gamesPerPage">
+                        <div class="card text-white bg-info mb-3">
+                                <div class="card-header">{{game.name}}</div>
+                            <div class="card-body">
+                                    <h6 class="card-title">{{game.minPlayers}}-{{game.maxPlayers}} Players Ages {{game.age}} and up</h6>
+                                    <p class="card-text" ng-repeat="quality in game.qualities" style="float:left">
+                                        <img class="qualicon" ng-src="{{quality}}"/>
+                                    </p>
+                                    <br>
+                                    <br>
+                                    <p class="card-text">
+                                        Time to play: {{game.time}} minutes
+                                    </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+	        <div id="pagination">
+		        <ul class='pagination'>
+			        <li ng-repeat="i in getNumber(numberOfPages) track by $index">
+				        <a ng-show="($index+1) == currentPage" href='#!/myGames' class='active'>{{$index+1}}</a>
+				        <a ng-show="($index+1) != currentPage" href='#!/myGames' ng-click="newPage($index+1)">{{$index+1}}</a>
+			        </li>
+		        </ul>
+	        </div>
+            
+    </div>
+</div>
+<div ng-show="emptyRoom">
+        You don't have any games on your shelf yet. You should click on 'Search Games' above and fix that.
+</div>

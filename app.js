@@ -1,4 +1,4 @@
-var gameRoom = angular.module('gameRoom', ['ngRoute', 'ngResource', 'angular-jwt']);
+var gameRoom = angular.module('gameRoom', ['ngRoute', 'ngResource', 'angular-jwt', 'ui.bootstrap']);
 
 gameRoom.config(function ($routeProvider) {
     $routeProvider
@@ -66,7 +66,9 @@ gameRoom.filter('playerRange', function(){
     return function(input, target){
     var output=[];
     angular.forEach(input, function(game){
-        if(game.minPlayers <= target && target <= game.maxPlayers){
+        if(target === null||target ===''){
+            output=input;
+        }else if(game.minPlayers <= target && target <= game.maxPlayers){
             output.push(game); 
         };
     });     
@@ -128,13 +130,12 @@ gameRoom.controller('newAccountController', ['$scope', '$location', '$resource',
                         };
                     })
                 }
-                else{
-                    $scope.createError = 'Your passwords do no match. Please try again.'
-                };
             }, function (error) {
                $scope.createError = error.data.message;
             });
-        }
+        }else{
+            $scope.createError = 'Your passwords do no match. Please try again.'
+        };
     };
 }]);
 
@@ -194,30 +195,29 @@ gameRoom.controller('myGamesController', ['$scope', '$location', '$resource', 'j
                 game.qualities = qualityArray;
             }
             $scope.gamesPerPage = 6;
-            $scope.currentPage = 1;
             $scope.filteredGames = $scope.gamelist;
-            $scope.gameNameSearch = "";
-            $scope.gameNumSearch = "";
-            console.log($scope.gamelist);
+            $scope.gameNameSearch = '';
+            $scope.gameNumSearch = null;
+            $scope.totalItems = $scope.filteredGames.length;
+            $scope.currentPage = 1;
 
-            $scope.newPage = function(page){
-                console.log(page, 'newpage')
-                $scope.currentPage = page;
-                var start = (($scope.gamesPerPage*$scope.currentPage)-$scope.gamesPerPage);
-                var end = start+parseInt($scope.gamesPerPage);
-                $scope.filteredGames = $scope.gamelist.slice(start,end); 
-            }
+            $scope.setPage = function (pageNo) {
+                $scope.currentPage = pageNo;
+            };
 
-            $scope.getNumber = function(num){
-                return new Array(num);
-            }
+            $scope.pageChanged = function() {
+                $log.log('Page changed to: ' + $scope.currentPage);
+            };
+
+            $scope.maxSize = $scope.gamesPerPage;
+            $scope.bigTotalItems = $scope.filteredGames.length;
+            $scope.bigCurrentPage = 1;
 
             $scope.$watch('gamesPerPage',function(newValue,oldValue){
                 if(newValue!==oldValue){
-                    $scope.currentPage = 1;
+                    //$scope.currentPage = 1;
                     $scope.numberOfPages = Math.ceil($scope.gamelist.length/$scope.gamesPerPage);
-                    $scope.newPage(1);
-                    console.log(newValue, oldValue, 'something');
+                    //$scope.newPage(1);
                 }
             });
 
@@ -284,23 +284,23 @@ gameRoom.controller('searchController', ['$scope', '$location', '$resource', 'jw
             game.qualities = qualityArray;
         }
         $scope.gamesPerPage = 6;
-        $scope.currentPage = 1;
         $scope.filteredGames = $scope.gamelist;
-        $scope.gameNameSearch = "";
-        $scope.gameNumSearch = "2";
-        console.log($scope.gamelist);
+        $scope.gameNameSearch = '';
+        $scope.gameNumSearch = null;
+        $scope.totalItems = $scope.filteredGames.length;
+        $scope.currentPage = 1;
 
-        $scope.newPage = function(page){
-            console.log(page, 'newpage')
-            $scope.currentPage = page;
-            var start = (($scope.gamesPerPage*$scope.currentPage)-$scope.gamesPerPage);
-            var end = start+parseInt($scope.gamesPerPage);
-            $scope.filteredGames = $scope.gamelist.slice(start,end); 
-        }
+        $scope.setPage = function (pageNo) {
+            $scope.currentPage = pageNo;
+        };
 
-        $scope.getNumber = function(num){
-            return new Array(num);
-        }
+        $scope.pageChanged = function() {
+            $log.log('Page changed to: ' + $scope.currentPage);
+        };
+
+        $scope.maxSize = $scope.gamesPerPage;
+        $scope.bigTotalItems = $scope.filteredGames.length;
+        $scope.bigCurrentPage = 1;
 
         $scope.$watch('gamesPerPage',function(newValue,oldValue){
             if(newValue!==oldValue){
