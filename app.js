@@ -194,6 +194,7 @@ gameRoom.controller('myGamesController', ['$scope', '$location', '$resource', 'j
                 }
                 game.qualities = qualityArray;
             }
+            console.log($scope.gamelist);
             $scope.gamesPerPage = 6;
             $scope.filteredGames = $scope.gamelist;
             $scope.gameNameSearch = '';
@@ -289,6 +290,7 @@ gameRoom.controller('searchController', ['$scope', '$location', '$resource', 'jw
         $scope.gameNumSearch = null;
         $scope.totalItems = $scope.filteredGames.length;
         $scope.currentPage = 1;
+        
 
         $scope.setPage = function (pageNo) {
             $scope.currentPage = pageNo;
@@ -327,6 +329,15 @@ gameRoom.controller('searchController', ['$scope', '$location', '$resource', 'jw
                 $scope.numberOfPages = Math.ceil($scope.filteredGames.length/$scope.gamesPerPage);	
             }
         });
+
+        $scope.shelveGame= function (id) {
+            console.log(id);
+            var tokenPayload = jwtHelper.decodeToken(credService.token);
+            console.log(tokenPayload);
+            $scope.addToShelf = $resource('/gameshelf/'+tokenPayload.user.myShelf+'/'+id, {}, {update: {method: 'PUT'}});
+            $scope.addToShelf.update();
+            
+        };
     },function(error){
         console.log(error);
     });

@@ -45,9 +45,13 @@
                     <p class="card-text" ng-repeat="quality in game.qualities" style="float:left">
                         <img class="qualicon" ng-src="{{quality}}"/>
                     </p>
+                    <br>
+                    <br>
+                    <br>
                     <p class="card-text">
                         Time to play: {{game.time}} minutes
                     </p>
+                    <button type="button" ng-click="shelveGame(game.id)" class="btn btn-dark">Add to my Room</button>
                 </div>
             </div>
         </div>
@@ -56,4 +60,43 @@
 
 <div id="pagination">
     <ul uib-pagination items-per-page="gamesPerPage" boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+</div>
+
+<div id="legend">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <img class="qualicon" ng-src="/icons/bluffing.png"/>= Bluffing
+            </div>
+            <div class="col-sm">
+                <img class="qualicon" ng-src="/icons/cooperative.png"/>= Cooperative
+            </div>
+            <div class="col-sm">
+                <img class="qualicon" ng-src="/icons/deck_building.png"/>= Deck Building
+            </div>
+            <div class="col-sm">
+                <img class="qualicon" ng-src="/icons/dice.png"/>= Uses Dice
+            </div>
+            <div class="col-sm">
+                <img class="qualicon" ng-src="/icons/party.png"/>= Party
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <img class="qualicon" ng-src="/icons/set_collecting.png"/>= Set Collecting
+            </div>
+            <div class="col-sm">
+                <img class="qualicon" ng-src="/icons/token_movement.png"/>= Token Movement
+            </div>
+            <div class="col-sm">
+                <img class="qualicon" ng-src="/icons/token_placement.png"/>= Token Placement
+            </div>
+            <div class="col-sm">
+                <img class="qualicon" ng-src="/icons/trivia.png"/>= Trivia
+            </div>
+            <div class="col-sm">
+                <img class="qualicon" ng-src="/icons/expansion.png"/>= Expansion
+            </div>
+        </div>
+    </div>
 </div>

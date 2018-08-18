@@ -11,6 +11,11 @@ body {
     margin: 0px;
 }
 
+#legend, #New-Game{
+    background-color: rgba(255,255,255, .5); 
+    padding: 10px;
+}
+
 .card-header{
     font-weight: bold;
 }
