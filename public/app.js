@@ -93,10 +93,12 @@ gameRoom.controller('loginController', ['$scope', '$location', '$resource','jwtH
             };
         }, function (error) {
             if(error.data == 'Unauthorized'){
-                $scope.loginError = 'That username and password combination are not in our system. Please try again.'
+                $scope.loginError1 = 'That username and password combination are not in our system. Please try again.'
+                $scope.loginError2 = '';
             }
             else{
-                $scope.loginError = 'Something went wrong! Make sure you typed something in both fields. If you did, please reload the page and try again.'
+                $scope.loginError1 = 'Something went wrong! Make sure you typed something in both fields.';
+                $scope.loginError2 = 'If you did, please reload the page and try again.';
             };
         })
     };
@@ -134,7 +136,7 @@ gameRoom.controller('newAccountController', ['$scope', '$location', '$resource',
                $scope.createError = error.data.message;
             });
         }else{
-            $scope.createError = 'Your passwords do no match. Please try again.'
+            $scope.createError = 'Your passwords do not match. Please try again.'
         };
     };
 }]);
@@ -143,6 +145,8 @@ gameRoom.controller('homeController', ['$scope','$location', 'jwtHelper', 'credS
     if(jwtHelper.isTokenExpired(credService.token)){
         $location.path('/security');
     }
+    $scope.loginError1 = '';
+    $scope.loginError2 = '';
 
 }]);
 

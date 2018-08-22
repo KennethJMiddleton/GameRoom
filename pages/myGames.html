@@ -42,7 +42,7 @@
         <div id="games">
             <div class="row">
                 <div class="col-sm-4" ng-repeat="game in filteredGames.slice(((currentPage-1)*gamesPerPage), ((currentPage)*gamesPerPage))|filter:{name: gameNameSearch}|playerRange: gameNumSearch|limitTo:gamesPerPage">
-                    <div class="card text-white bg-info mb-3">
+                    <div class="card bg-light mb-3">
                         <div class="card-header">
                             {{game.name}}
                         </div>
@@ -109,5 +109,5 @@
     </div>
 </div>
 <div ng-show="emptyRoom">
-        You don't have any games on your shelf yet. You should click on 'Search Games' above and fix that.
+        You don't have any games in your room yet. You should click on 'Search Games' above and fix that.
 </div>

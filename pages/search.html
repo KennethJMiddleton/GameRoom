@@ -38,7 +38,7 @@
 <div id="games">
     <div class="row">
         <div class="col-sm-4" ng-repeat="game in filteredGames.slice(((currentPage-1)*gamesPerPage), ((currentPage)*gamesPerPage))|filter:{name: gameNameSearch}|limitTo:gamesPerPage">
-            <div class="card text-white bg-info mb-3">
+            <div class="card bg-light mb-3">
                 <div class="card-header">{{game.name}}</div>
                 <div class="card-body">
                     <h6 class="card-title">{{game.minPlayers}}-{{game.maxPlayers}} Players Ages {{game.age}} and up</h6>

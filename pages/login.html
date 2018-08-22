@@ -1,11 +1,24 @@
-<form ng-submit='submitLogin()'>
-    <h2>Please enter your username and password below</h2>
-    <label for='user-input'>Username</label> 
-    <input type='text' ng-model='username'><br>
-    <label for='password-input'> Password</label>
-    <input type='password' ng-model='password'><br>
-    <button type='submit' class='login-button btn btn-dark' role='button'>Login</button>
-    <section class='Login-Error'>{{loginError}}</section>
-    <br>
-    <a href='#!/' class='btn btn-dark'role='button'>Back to the Main Page</a>
-</form>
+<div id='login' class='container'>
+    <div class='row'>
+        <form ng-submit='submitLogin()'>
+            <h2>Please enter your username and password below</h2>
+            <div class="col-sm">
+                <label for='user-input'>Username</label>
+            </div>    
+            <div class="col-sm">
+                <input type='text' ng-model='username'><br>
+            </div>
+            <div class="col-sm">
+                <label for='password-input'> Password</label>
+            </div>
+            <div class="col-sm">
+                <input type='password' ng-model='password'><br>
+            </div>
+            <br>
+            <button type='submit' class='login-button btn btn-dark' role='button'>Login</button>
+            <a href='#!/' class='btn btn-dark'role='button'>Back to the Main Page</a>
+            <section class='Login-Error line-1'>{{loginError1}}</section>
+            <section class='Login-Error line-2'>{{loginError2}}</section>
+        </form>
+    </div>
+</div>

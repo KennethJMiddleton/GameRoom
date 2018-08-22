@@ -11,9 +11,13 @@ body {
     margin: 0px;
 }
 
-#legend, #New-Game{
+#legend, #New-Game, #instructions{
     background-color: rgba(255,255,255, .5); 
     padding: 10px;
+}
+
+.Login-Error{
+    font-weight: bold;
 }
 
 .card-header{
