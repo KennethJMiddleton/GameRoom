@@ -23,10 +23,49 @@
     </nav>
 </header>
 <body>
-    <div id='instructions'>
-        Hello and welcome to your Game Room, a great place to store your games!<br>
-        Click on 'My Games' to view the games stored in your room.<br>
-        Click on 'Search Games' to browse games from our list to add to your room.<br>
-        Click on 'Add a Game' to add a new game to our list.<br>
+    <div id='instructions' class='container'>
+        <p class='greeting'>
+            Hello and welcome to your Game Room, a great place to store your games!
+            <br>
+            This site allows you to create a room full of all the boardgames you own.
+        </p>
+        <br>
+        <div id="info" class='container'>
+                <div class="row">
+                    <div class="col-sm-4" >
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">My Games</div>
+                            <div class="card-body">
+                                Here you can see all the games in your room.<br>
+                                You can also search through them by name or number of players.<br>
+                                <br>
+                                <a class="btn btn-dark" href="#!/myGames">My Games</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" >
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">Search Games</div>
+                            <div class="card-body">
+                                Here you can see all the games in our Master List.<br>
+                                You can also move a copy of the game into your room.<br>
+                                <br>
+                                <a class="btn btn-dark" href="#!/search">Search Games</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" >
+                        <div class="card bg-light mb-3">
+                            <div class="card-header">Add a Game</div>
+                            <div class="card-body">
+                                Here you can add a game and all the information about it to our Master List.<br>
+                                Please do so carefully so that other users will be able to benfit form your help.<br>
+                                <br>
+                                <a class="btn btn-dark" href="#!/newGame">Add a Game</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 </body>

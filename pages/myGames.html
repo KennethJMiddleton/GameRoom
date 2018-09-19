@@ -23,7 +23,7 @@
     </nav>
 </header>
 <div ng-hide="emptyRoom">
-    <div class="room">
+    <div class="room container">
         <div id="filters">
             <label for="gamesPerPage">Games Per Page:</label>
             <select id="gamesPerPage" ng-model="gamesPerPage">
@@ -38,7 +38,7 @@
             <span id="searchNumber"><label for="searchBox2">Search by Number of Players:</label>
             <input type="number" ng-model="gameNumSearch" id="searchBox2"/></span>
         </div>
-
+        <br>
         <div id="games">
             <div class="row">
                 <div class="col-sm-4" ng-repeat="game in filteredGames.slice(((currentPage-1)*gamesPerPage), ((currentPage)*gamesPerPage))|filter:{name: gameNameSearch}|playerRange: gameNumSearch|limitTo:gamesPerPage">
@@ -71,6 +71,7 @@
 
     <div id="legend">
         <div class="container">
+            <h5>Legend:</h5>
             <div class="row">
                 <div class="col-sm">
                     <img class="qualicon" ng-src="/icons/bluffing.png"/>= Bluffing
@@ -108,6 +109,6 @@
         </div>
     </div>
 </div>
-<div ng-show="emptyRoom">
+<div ng-show="emptyRoom" class='container'>
         You don't have any games in your room yet. You should click on 'Search Games' above and fix that.
 </div>

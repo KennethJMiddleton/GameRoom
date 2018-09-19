@@ -23,7 +23,7 @@
     </nav>
 </header>
 
-<div id="filters">
+<div id="filters" class='container'>
     <label for="gamesPerPage">Games Per Page:</label>
     <select id="gamesPerPage" ng-model="gamesPerPage">
         <option ng-value="3">3</option>
@@ -34,8 +34,8 @@
     <span id="searchName"><label for="searchBox1">Search by Name:</label>
     <input type="text" ng-model="gameNameSearch" id="searchBox1"/></span>
 </div>
-
-<div id="games">
+<br>
+<div id="games" class='container'>
     <div class="row">
         <div class="col-sm-4" ng-repeat="game in filteredGames.slice(((currentPage-1)*gamesPerPage), ((currentPage)*gamesPerPage))|filter:{name: gameNameSearch}|limitTo:gamesPerPage">
             <div class="card bg-light mb-3">
@@ -58,12 +58,13 @@
     </div>
 </div>
 
-<div id="pagination">
+<div id="pagination" class='container'>
     <ul uib-pagination items-per-page="gamesPerPage" boundary-links="true" total-items="totalItems" ng-model="currentPage" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
 </div>
 
-<div id="legend">
+<div id="legend" class='container'>
     <div class="container">
+        <h5>Legend:</h5>
         <div class="row">
             <div class="col-sm">
                 <img class="qualicon" ng-src="/icons/bluffing.png"/>= Bluffing
