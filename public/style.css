@@ -33,6 +33,14 @@ body {
     padding: 10px;
 }
 
+#form-head{
+    text-align: center;
+}
+
+#questions{
+    padding-left: 20%;
+}
+
 #instructions {
     margin-top: 2em;
 }
@@ -53,6 +61,9 @@ body {
     background-color: rgba(255,255,255, .5); 
     text-align: center;
     font-size: 1.5em;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 15px;
 }
 
 .Login-Error{

@@ -26,66 +26,68 @@
     </nav>
 </header>
 <form id="New-Game" class="New-Game" ng-submit='submitAdd()'>
-    <h2>Please fill out the form below to add a new game to the database</h2>
-    <label for="game-name">Please enter the FULL name of the game.</label> 
-    <input type="text" id="game-name" ng-model="name"><br>
-    <label for="min-players">What is the minimum number of players?</label> 
-    <input type="number" id="min-players" ng-model="minPlayers"><br>
-    <label for="max-players">What is the maximum number of players?</label> 
-    <input type="number" id="max-players" ng-model="maxPlayers"><br>
-    <label for="game-time">What is the average time it takes to play the game in minutes?</label> 
-    <input type="number" id="game-time" ng-model="time"><br>
-    <label for="game-age">How many years old should someone be to play the game?</label> 
-    <input type="number" id="game-age" ng-model="age"><br>
-    <p>Is this a cooperative game?</p>
-    <input type="radio" id="coop-t" ng-model="coop" value="true">
-    <label for="coop-t">Yes</label>
-    <input type="radio" id="coop-f" ng-model="coop" value="false">
-    <label for="coop-f">No</label><br>
-    <p>Does this game use dice?</p>
-    <input type="radio" id="dice-t" ng-model="dice" value="true">
-    <label for="dice-t">Yes</label>
-    <input type="radio" id="dice-f" ng-model="dice" value="false">
-    <label for="dice-f">No</label><br>
-    <p>Is this a deck building game?</p>
-    <input type="radio" id="deck-t" ng-model="deckBuilding" value="true">
-    <label for="deck-t">Yes</label>
-    <input type="radio" id="deck-f" ng-model="deckBuilding" value="false">
-    <label for="deck-f">No</label><br>
-    <p>Is this a bluffing game?</p>
-    <input type="radio" id="bluff-t" ng-model="bluffing" value="true">
-    <label for="bluff-t">Yes</label>
-    <input type="radio" id="bluff-f" ng-model="bluffing" value="false">
-    <label for="bluff-f">No</label><br>
-    <p>Does this game have you move pawns (or other tokens) around the playspace?</p>
-    <input type="radio" id="pawn-t" ng-model="tokenMovement" value="true">
-    <label for="pawn-t">Yes</label>
-    <input type="radio" id="pawn-f" ng-model="tokenMovement" value="false">
-    <label for="pawn-f">No</label><br>
-    <p>Is this a worker palcement game?</p>
-    <input type="radio" id="WP-t" ng-model="tokenPlacement" value="true">
-    <label for="WP-t">Yes</label>
-    <input type="radio" id="WP-f" ng-model="tokenPlacement" value="false">
-    <label for="WP-f">No</label><br>
-    <p>Is this a set collecting game?</p>
-    <input type="radio" id="set-t" ng-model="setCollecting" value="true">
-    <label for="set-t">Yes</label>
-    <input type="radio" id="set-f" ng-model="setCollecting" value="false">
-    <label for="set-f">No</label><br>
-    <p>Is this game fast paced with a good amount of inter-player interaction (i.e. a party game)?</p>
-    <input type="radio" id="party-t" ng-model="party" value="true">
-    <label for="party-t">Yes</label>
-    <input type="radio" id="party-f" ng-model="party" value="false">
-    <label for="party-f">No</label><br>
-    <p>Is this a trivia game?</p>
-    <input type="radio" id="trivia-t" ng-model="trivia" value="true">
-    <label for="trivia-t">Yes</label>
-    <input type="radio" id="trivia-f" ng-model="trivia" value="false">
-    <label for="trivia-f">No</label><br>
-    <p>Does this game require another game to be played (i.e. is this an expansion)?</p>
-    <input type="radio" id="exp-t" ng-model="expansion" value="true">
-    <label for="exp-t">Yes</label>
-    <input type="radio" id="exp-f" ng-model="expansion" value="false">
-    <label for="exp-f">No</label><br>
-    <button type="submit" class="add-new-game-button btn btn-dark" role='button'>Create this Game</button>
+    <h2 id="form-head">Please fill out the form below to add a new game to the database</h2>
+    <div id="questions">
+        <label for="game-name">Please enter the FULL name of the game.</label> 
+        <input type="text" id="game-name" ng-model="name"><br>
+        <label for="min-players">What is the minimum number of players?</label> 
+        <input type="number" id="min-players" ng-model="minPlayers"><br>
+        <label for="max-players">What is the maximum number of players?</label> 
+        <input type="number" id="max-players" ng-model="maxPlayers"><br>
+        <label for="game-time">What is the average time it takes to play the game in minutes?</label> 
+        <input type="number" id="game-time" ng-model="time"><br>
+        <label for="game-age">How many years old should someone be to play the game?</label> 
+        <input type="number" id="game-age" ng-model="age"><br>
+        <p>Is this a cooperative game?</p>
+        <input type="radio" id="coop-t" ng-model="coop" value="true">
+        <label for="coop-t">Yes</label>
+        <input type="radio" id="coop-f" ng-model="coop" value="false">
+        <label for="coop-f">No</label><br>
+        <p>Does this game use dice?</p>
+        <input type="radio" id="dice-t" ng-model="dice" value="true">
+        <label for="dice-t">Yes</label>
+        <input type="radio" id="dice-f" ng-model="dice" value="false">
+        <label for="dice-f">No</label><br>
+        <p>Is this a deck building game?</p>
+        <input type="radio" id="deck-t" ng-model="deckBuilding" value="true">
+        <label for="deck-t">Yes</label>
+        <input type="radio" id="deck-f" ng-model="deckBuilding" value="false">
+        <label for="deck-f">No</label><br>
+        <p>Is this a bluffing game?</p>
+        <input type="radio" id="bluff-t" ng-model="bluffing" value="true">
+        <label for="bluff-t">Yes</label>
+        <input type="radio" id="bluff-f" ng-model="bluffing" value="false">
+        <label for="bluff-f">No</label><br>
+        <p>Does this game have you move pawns (or other tokens) around the playspace?</p>
+        <input type="radio" id="pawn-t" ng-model="tokenMovement" value="true">
+        <label for="pawn-t">Yes</label>
+        <input type="radio" id="pawn-f" ng-model="tokenMovement" value="false">
+        <label for="pawn-f">No</label><br>
+        <p>Is this a worker palcement game?</p>
+        <input type="radio" id="WP-t" ng-model="tokenPlacement" value="true">
+        <label for="WP-t">Yes</label>
+        <input type="radio" id="WP-f" ng-model="tokenPlacement" value="false">
+        <label for="WP-f">No</label><br>
+        <p>Is this a set collecting game?</p>
+        <input type="radio" id="set-t" ng-model="setCollecting" value="true">
+        <label for="set-t">Yes</label>
+        <input type="radio" id="set-f" ng-model="setCollecting" value="false">
+        <label for="set-f">No</label><br>
+        <p>Is this game fast paced with a good amount of inter-player interaction (i.e. a party game)?</p>
+        <input type="radio" id="party-t" ng-model="party" value="true">
+        <label for="party-t">Yes</label>
+        <input type="radio" id="party-f" ng-model="party" value="false">
+        <label for="party-f">No</label><br>
+        <p>Is this a trivia game?</p>
+        <input type="radio" id="trivia-t" ng-model="trivia" value="true">
+        <label for="trivia-t">Yes</label>
+        <input type="radio" id="trivia-f" ng-model="trivia" value="false">
+        <label for="trivia-f">No</label><br>
+        <p>Does this game require another game to be played (i.e. is this an expansion)?</p>
+        <input type="radio" id="exp-t" ng-model="expansion" value="true">
+        <label for="exp-t">Yes</label>
+        <input type="radio" id="exp-f" ng-model="expansion" value="false">
+        <label for="exp-f">No</label><br>
+        <button type="submit" class="add-new-game-button btn btn-dark" role='button'>Create this Game</button>
+    </div>
   </form>
